@@ -10,7 +10,7 @@ console.log("🔑 Secret compartilhado:", process.env.SIGNATURE_HEADER);
 
 app.post("/webhook", (req, res) => {
 
-  console.log("body:", req.body);
+  console.log("headers:", req.headers);
   if (!verifyHmac(req)) {
     console.log("🚫 Assinatura inválida! Webhook rejeitado.");
     return res.status(403).send("Assinatura inválida");
