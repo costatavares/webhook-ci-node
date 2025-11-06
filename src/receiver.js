@@ -5,10 +5,12 @@ import { verifyHmac } from "./utils/hmac.js";
 
 const app = express();
 app.use(bodyParser.json({ verify: (req, res, buf) => (req.rawBody = buf) }));
-// console.log("🔑 Secret compartilhado:", process.env.WEBHOOK_SECRET);
+console.log("🔑 Secret compartilhado:", process.env.WEBHOOK_SECRET);
+console.log("🔑 Secret compartilhado:", process.env.SIGNATURE_HEADER);
 
 app.post("/webhook", (req, res) => {
 
+  console.log("body:", req.body);
   if (!verifyHmac(req)) {
     console.log("🚫 Assinatura inválida! Webhook rejeitado.");
     return res.status(403).send("Assinatura inválida");
