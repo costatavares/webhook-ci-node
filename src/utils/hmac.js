@@ -42,7 +42,7 @@ const verifyHmac = (req,res) => {
 
     // Comparação segura (evita ataques de timing)
     return crypto.timingSafeEqual(
-      Buffer.from(signatureHeader, "hex"),
+      Buffer.from(signature, "hex"),
       Buffer.from(computedSignature, "hex")
     );
   } catch (err) {
