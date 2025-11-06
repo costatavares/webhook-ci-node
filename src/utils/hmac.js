@@ -29,7 +29,7 @@ const verifyHmac = (req,res) => {
     }
 
     // Remove o prefixo "sha256=" se existir
-    const signature = githubSignature.replace("sha256=", "");
+    const signature = signatureHeader.replace("sha256=", "");
 
     // Calcula o HMAC com base no corpo original da requisição
     const computedSignature = crypto
