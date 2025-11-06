@@ -19,21 +19,36 @@ import crypto from "crypto";
 const  WEBHOOK_SECRET  = process.env.WEBHOOK_SECRET;
 const SIGNATURE_HEADER = process.env.SIGNATURE_HEADER;
 
-const verifyHmac = (req) => {
-  const signatureHeader = req.headers[SIGNATURE_HEADER];
-  if (!signatureHeader) return false;
+const verifyHmac = (req,res) => {
+  try { 
+    const signatureHeader = req.headers[SIGNATURE_HEADER];
+    
+    
+    if (!signatureHeader) {
+      return res.status(400).send("Cabeçalho de assinatura ausente!");
+    }
 
-  // Calcula o HMAC com base no corpo original da requisição
-  const computedSignature = crypto
-    .createHmac("sha256", WEBHOOK_SECRET)
-    .update(req.rawBody)
-    .digest("hex");
+    // Remove o prefixo "sha256=" se existir
+    const signature = githubSignature.replace("sha256=", "");
 
-  // Comparação segura (evita ataques de timing)
-  return crypto.timingSafeEqual(
-    Buffer.from(signatureHeader, "hex"),
-    Buffer.from(computedSignature, "hex")
-  );
+    // Calcula o HMAC com base no corpo original da requisição
+    const computedSignature = crypto
+      .createHmac("sha256", WEBHOOK_SECRET)
+      .update(req.rawBody)
+      .digest("hex");
+
+    console.log("Assinatura recebida:", signature);
+    console.log("Assinatura computada:", computedSignature);  
+
+    // Comparação segura (evita ataques de timing)
+    return crypto.timingSafeEqual(
+      Buffer.from(signatureHeader, "hex"),
+      Buffer.from(computedSignature, "hex")
+    );
+  } catch (err) {
+    console.error("Erro ao validar assinatura:", err.message);
+    return res.status(401).send("Erro na verificacao da assinatura");
+  }
 }
 
 // Gera assinatura HMAC SHA256
