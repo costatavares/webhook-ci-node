@@ -18,7 +18,7 @@ const  enviarWebhook= async () => {
 
   const headers = {
     "Content-Type": "application/json",
-    [SIGNATURE_HEADER]: signature(payload),
+    // [SIGNATURE_HEADER]: `${signature(payload)}++`,
   };
 
   try {
@@ -26,7 +26,8 @@ const  enviarWebhook= async () => {
     console.log("✅ Webhook enviado com sucesso!");
     console.log("Resposta do receiver:", response.data);
   } catch (error) {
-    console.error("❌ Erro ao enviar webhook:", error.message);
+    console.error(`❌ Erro ao enviar webhook: ${error.message} - ${error.response.statusText}`); ;    
+    console.error(`❌ Mensagem de retorno do webhook: ${error.response.data}`);    
   }
 }
 
