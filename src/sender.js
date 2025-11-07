@@ -18,7 +18,7 @@ const  enviarWebhook= async () => {
 
   const headers = {
     "Content-Type": "application/json",
-    // [SIGNATURE_HEADER]: `${signature(payload)}++`,
+    [SIGNATURE_HEADER]: `${signature(payload)}`,
   };
 
   try {

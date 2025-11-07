@@ -37,8 +37,8 @@ const verifyHmac = (req,res) => {
       .update(req.rawBody)
       .digest("hex");
 
-    console.log("Assinatura recebida:", signature);
-    console.log("Assinatura computada:", computedSignature);  
+    // console.log("Assinatura recebida:", signature);
+    // console.log("Assinatura computada:", computedSignature);  
 
     // Comparação segura (evita ataques de timing)
     return crypto.timingSafeEqual(

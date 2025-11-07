@@ -9,19 +9,18 @@ console.log("🔑 Secret compartilhado:", process.env.WEBHOOK_SECRET);
 console.log("🔑 Secret compartilhado:", process.env.SIGNATURE_HEADER);
 
 app.post("/webhook", (req, res) => {
-
-  console.log("headers:", req.headers);
-  if (!verifyHmac(req,res)) {
-    console.log("🚫 Assinatura inválida! Webhook rejeitado.");
-    return res.status(403).send("Assinatura inválida");
-  }
+  try {
+     verifyHmac(req,res); 
     
-  console.log("📩 Webhook recebido!");
-  console.log("Dados:", req.body);
+    console.log("📩 Webhook recebido!")
+    // Exemplo de ação: salvar, enviar e-mail, atualizar status, etc.
+    // Aqui só confirmamos o recebimento
+    res.status(200).send("Webhook recebido com sucesso!");  
+  } catch (error) {
+    return res.status(403).send(error.message);
+  }
+  
 
-  // Exemplo de ação: salvar, enviar e-mail, atualizar status, etc.
-  // Aqui só confirmamos o recebimento
-  res.status(200).send("Webhook recebido com sucesso!");
 });
 
 const PORT = 3000;
