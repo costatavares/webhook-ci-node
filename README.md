@@ -49,11 +49,19 @@ O receptor refaz o cálculo e compara. Se as assinaturas baterem, o conteúdo é
 ## 🧩 Estrutura do Projeto
 
 ```bash
-📁 webhook-hmac/
-├── sender.js         # Simula o envio de um webhook (GitHub fake)
-├── receiver.js       # Recebe e valida a assinatura HMAC
-├── .env              # Variáveis de ambiente
-└── README.md         # Este arquivo
+📁 webhook-ci-node/
+├── 📁 src/
+|  ├── 📁 dto/
+|  |     ├── webhook.dto.js  
+|  ├── 📁 test/
+|  ├── 📁 utils/
+|  ├── 📁 validate/   
+|  ├── receiver.js   # Recebe e valida a assinatura HMAC 
+|  ├── sender.js     # Simula o envio de um webhook (GitHub fake)
+|  ├── server.js     # 
+|
+├── .env.default    # Variáveis de ambiente
+└── README.md       # Este arquivo
 ```
 
 ---
