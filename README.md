@@ -51,17 +51,29 @@ O receptor refaz o cálculo e compara. Se as assinaturas baterem, o conteúdo é
 ```bash
 📁 webhook-ci-node/
 ├── 📁 src/
-|  ├── 📁 dto/
-|  |     ├── webhook.dto.js  
-|  ├── 📁 test/
-|  ├── 📁 utils/
-|  ├── 📁 validate/   
-|  ├── receiver.js   # Recebe e valida a assinatura HMAC 
-|  ├── sender.js     # Simula o envio de um webhook (GitHub fake)
-|  ├── server.js     # 
-|
-├── .env.default    # Variáveis de ambiente
-└── README.md       # Este arquivo
+│  ├── 📁 dto/
+│  │     └── webhook.dto.js                   # DTO de entrada (shape esperado do payload do webhook)
+│  │
+│  ├── 📁 test/
+│  │     ├── receiver.spec.js                 # Testes unitários do receiver.js
+│  │     ├── secret.spec.js                   # Testes relacionados ao segredo/HMAC
+│  │     ├── sender.spec.js                   # Testes que validam o envio do webhook fake
+│  │     └── webhook.spec.js                  # Testes completos do fluxo do webhook (E2E mini)
+│  │
+│  ├── 📁 utils/
+│  │     ├── hmac.js                          # Função utilitária para gerar/verificar HMAC SHA-256
+│  │     └── secret.js                        # Centraliza acesso ao SECRET (env)
+│  │
+│  ├── 📁 validate/
+│  │     ├── validate.js                      # Função genérica de validação (usa Joi, Yup etc.)
+│  │     └── webhookSchema.validate.js        # Schema específico do payload do webhook
+│  │
+│  ├── receiver.js                            # Recebe o webhook, valida HMAC e estrutura de dados
+│  ├── sender.js                              # Simula GitHub enviando um POST com assinatura HMAC
+│  ├── server.js                              # Inicializa o Express; separa app.listen da lógica principal
+│
+├── .env.default                               # Modelo das variáveis de ambiente (SECRET, PORT...)
+└── README.md                                  # Documentação do projeto
 ```
 
 ---
