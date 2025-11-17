@@ -1,27 +1,28 @@
-// receiver.js
 import express from "express";
 import bodyParser from "body-parser";
-import { verifyHmac } from "./utils/hmac.js";
+import { validateRequestWebhook } from "#validate/validate.js";
 
 const app = express();
 app.use(bodyParser.json({ verify: (req, res, buf) => (req.rawBody = buf) }));
-console.log("🔑 Secret compartilhado:", process.env.WEBHOOK_SECRET);
-console.log("🔑 Secret compartilhado:", process.env.SIGNATURE_HEADER);
+console.log("🔑 Assiantura header:", process.env.SIGNATURE_HEADER);
 
 app.post("/webhook", (req, res) => {
   try {
-     verifyHmac(req,res); 
+    const result = validateRequestWebhook(req);
+    console.log("🔍 Resultado da validação:", result);
     
-    console.log("📩 Webhook recebido!")
-    // Exemplo de ação: salvar, enviar e-mail, atualizar status, etc.
+    if (!result?.isValid) {
+      return res.status(400).json({ error: result.message });
+    }
+    
     // Aqui só confirmamos o recebimento
-    res.status(200).send("Webhook recebido com sucesso!");  
+    console.log("📩 Webhook recebido!");
+    res.status(200).json({ status: 200, message: "Webhook recebido com sucesso!"});  
   } catch (error) {
+    console.error("❌ Erro ao processar webhook:", error);
     return res.status(403).send(error.message);
   }
-  
-
 });
 
-const PORT = 3000;
-app.listen(PORT, () => console.log(`🚀 Webhook receiver rodando em http://localhost:${PORT}`));
+// exportar o app para os testes
+export default app;
