@@ -1,0 +1,17 @@
+name: webhook-node-ci-workflow
+on: [push]
+jobs:
+  check-application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+      - name: Run linter
+        run: npm run lint
