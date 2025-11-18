@@ -122,6 +122,6 @@ describe('enviarWebhook executado automaticamente', () => {
 
     expect(axios.post).toHaveBeenCalledTimes(1);
     expect(retorno.status).toEqual(200);
-    expect(retorno.data).toEqual({ message: 'Webhook recebido com sucesso', status: 200 });
+    expect(retorno.data).toEqual({ message: 'Webhook recebido com sucesso!', status: 200 });
   });
 });
