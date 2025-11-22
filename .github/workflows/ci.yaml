@@ -18,3 +18,4 @@ jobs:
         run: npm test
       - name: Run linter
         run: npm run lint
+# // Add more steps as needed for your CI workflow
